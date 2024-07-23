@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "socialaccount");
+include('config.php');
 if (isset($_POST['submit'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
@@ -13,11 +13,19 @@ if (isset($_POST['submit'])) {
     if ($row['email'] == $email) {
       $longpassword = md5($password);
       if ($row['password'] == $longpassword) {    //Password and email Matched
-        $_SESSION["theid"] =  $row['id'];
-        $_SESSION["thename"] =  $row['name'];
-        $_SESSION["theemail"] =  $row['email'];
-        $_SESSION["thepassword"] = $password;
-        header("location: dashboard.php");
+        if ($row['is_varified'] == 1) {
+          $_SESSION["theid"] =  $row['id'];
+          $_SESSION["thename"] =  $row['name'];
+          $_SESSION["theemail"] =  $row['email'];
+          $_SESSION["thepassword"] = $password;
+          header("location: dashboard.php");
+        } else {
+          $_SESSION["theid"] =  $row['id'];
+          $_SESSION["thename"] =  $row['name'];
+          $_SESSION["theemail"] =  $row['email'];
+          $_SESSION["thepassword"] = $password;
+          header("location: unverified.php");
+        }
       } else {
         echo "<script>alert('Wrong Password! try another?');window.location.href='loginpage.php';</script>";
       }
