@@ -118,6 +118,7 @@ session_start();
                 </div>
                 <br><a href="dashboard.php" class="btn btn-success">Cancel</a>
             </div>
+            
             <br>
         </form>
         </div>

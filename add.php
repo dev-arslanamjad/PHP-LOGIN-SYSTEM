@@ -35,7 +35,7 @@ function sendmail($email, $v_code)
         $mail->Subject = "Successfully Created an Account";
         $mail->Body    = "Thankew for Registering You can use the following Link to verify <br> <b><a href='http://localhost/emailverify/verify.php?email=$email&v_code=$v_code'>Click me to Verify</a><b><br>";
         if ($mail->send()) {
-            $conn = mysqli_connect("localhost","root","","emailverify");
+            $conn = mysqli_connect("localhost", "root", "", "emailverify");
             $name = mysqli_real_escape_string($conn, $_POST['name']);
             $_SESSION["thename"] = $name;
             echo "<script>alert('Please check your Email to verify');window.location.href='unverified.php';</script>";
@@ -60,12 +60,11 @@ if ($password == $cpassword) {
         $longpassword = md5($password);
         $v_code = bin2hex(random_bytes(16));
         $sql = "INSERT INTO user (name, email, password, `verification-code`, is_varified) VALUES ('$name', '$email', '$longpassword', '$v_code', '')";
-
+        $v_code;
         if ($conn->query($sql) === TRUE && sendmail($_POST['email'], $v_code)) {
             $sql = "SELECT * FROM user WHERE email = '$email'";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_array($result);
-
             $_SESSION["thename"] = $row['name'];
             $_SESSION["theemail"] = $row['email'];
             $_SESSION['thepassword'] = $password;
